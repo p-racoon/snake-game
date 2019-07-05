@@ -1,0 +1,27 @@
+.App {
+  /* text-align: center; */
+}
+.game {
+  /* display: flex;
+  flex-direction: row; */
+  /* margin: 0 auto; */
+}
+canvas{
+  background-color: black;
+}
+.board{
+  height: 100px;
+  width: 100px;
+}
+.square {
+  background: #fff;
+  border: 1px solid #999;
+  float: left;
+  line-height: 34px;
+  height: 34px;
+  margin-right: -1px;
+  margin-top: -1px;
+  padding: 0;
+  text-align: center;
+  width: 34px;
+}
