@@ -18,6 +18,7 @@ function App() {
   // let [isPlaying, setIsPlaying] = 0)
   // let ctx = null;
   // let [state, setstate] = initialState)
+  const [score, setScore] = useState(0)
   let canvasRef = React.useRef(null)
   useEffect(() => {
     document.addEventListener("keydown", (e) => onKeyPressed(e));
@@ -31,6 +32,7 @@ function App() {
   })
   return (
     <>
+      <h4>Score: {score}</h4>
       <div className=" game">
         <canvas
           ref={canvasRef}
@@ -76,7 +78,7 @@ function App() {
     for (let i = 0; i < trail.length; i++) {
       ctx.fillRect(trail[i].x * gridSize, trail[i].y * gridSize, gridSize - 2, gridSize - 2);
       if (trail[i].x == PlayerPositionX && trail[i].y == PlayerPositionY) {
-
+        snakeSize = 5
       }
     }
     trail.push({ x: PlayerPositionX, y: PlayerPositionY })
@@ -85,6 +87,7 @@ function App() {
     }
 
     if (AppleX == PlayerPositionX && AppleY == PlayerPositionY) {
+      setScore(score + 1)
       snakeSize += 1
       AppleX = Math.floor(Math.random() * tileCount)
       AppleY = Math.floor(Math.random() * tileCount)
