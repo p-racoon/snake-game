@@ -34,6 +34,7 @@ function App() {
     <>
       <h4>Score: {score}</h4>
       <div className=" game">
+        {/* <GameBoard Array2d={[]} ></GameBoard> */}
         <canvas
           ref={canvasRef}
           width={500}
@@ -67,6 +68,8 @@ function App() {
     }
     PlayerPositionX = newXPosition
     PlayerPositionY = newYPosition
+
+    
 
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, canvas.width, canvas.height)
