@@ -1,4 +1,4 @@
-export function onKeyPressed(e, startGame, stopGame, setVelocity) {
+export function onKeyPressed(e, startGame, stopGame,velocity, setVelocity) {
     switch (e.code) {
         
         case "Space":

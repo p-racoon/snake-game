@@ -1,4 +1,5 @@
 import React from 'react'
+import GamePixel from "../../components/GamePixel";
 
 export default function GameBoard({ gridSize, apple, isSnake }) {
     return (

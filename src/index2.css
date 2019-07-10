@@ -13,7 +13,7 @@
     flex-direction: row;
     flex-wrap: nowrap;
 }
-
+/* 
 .row {
     display: flex;
     flex-direction: row;
@@ -55,4 +55,4 @@
     .container {
         width: 1170px;
     }
-}
+} */

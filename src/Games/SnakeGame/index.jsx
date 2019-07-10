@@ -1,9 +1,9 @@
 
-import React, { useState, useEffect ,useReducer} from 'react'
-import GamePixel from "../../components/GamePixel";
+import React, { useState, useEffect, useReducer } from 'react'
 import ScoreBoard from "../../components/ScoreBoard";
 import { onKeyPressed } from "./onKeyPressed";
 import { takeRight } from 'lodash'
+import GameBoard from './GameBoard'
 
 let trail = [{ x: 10, y: 7 }, { x: 10, y: 8 }, { x: 10, y: 9 }, { x: 10, y: 10 }]; //initial trail
 let PlayerPosition = { x: 10, y: 10 } //starting PlayerPosition
@@ -24,29 +24,11 @@ export default function SnakeGame(props) {
         x: Math.floor(Math.random() * props.gridSize),
         y: Math.floor(Math.random() * props.gridSize)
     })
-    // const [scoreBoard, dispatchToScoreBoard] = useReducer(scoreBoardReducer, initialState);
-    function scoreBoardReducer(state,action){
-        switch (action.type) {
-            case 'playerName':
-              return {count: state.count + 1};
-            case 'incrementPlayerScore':
-              return {count: state.count - 1};
-              case 'decrementPlayerScore':
-                return {count: state.count - 1};
-            default:
-              throw new Error();
-          }
+    const [scoreBoard, dispatchToScoreBoard] = useReducer(scoreBoardReducer, {
+        playerName: "Guest user" + Math.floor(Math.random() * 1000),
+        playerScore: 0,
+    });
 
-    }
-    const [playerScore, setPlayerScore] = useState(0)
-    const [playerLevel, setPlayerLevel] = useState(0)
-    function setVelocity2(payload) {
-        velocity = payload;
-        setVelocity(payload);
-    }
-    const [playerName, setPlayerName] = useState("")
-    const handleKeyPress = (e) =>
-        onKeyPressed(e, startGame, stopGame, setVelocity2);
     useEffect(() => {
         document.addEventListener("keydown", handleKeyPress);
         return () => {
@@ -55,34 +37,46 @@ export default function SnakeGame(props) {
     }, [])
     return (
         <>
-            <ScoreBoard playerName={isPlaying} level={playerLevel} score={playerScore} />
+            {/* <ScoreBoard playerName={isPlaying} level={scoreBoard.playerLevel} score={scoreBoard.playerScore} /> */}
             <div className="row game-board">
-                <div className="col"></div>
-                <div className="col">
-                    {[...Array(props.gridSize)].map((e, rowIndex) =>
-                        <div className="game-row" key={rowIndex}>
-                            {
-                                [...Array(props.gridSize)].map((e, columnIndex) =>
-                                    <div className="col" key={rowIndex + "_" + columnIndex}>
-                                        <GamePixel pixelType={
-                                            (apple.x == rowIndex && apple.y == columnIndex) ? " apple " :
-                                                isSnake(rowIndex, columnIndex) ? "snake" :
-                                                    "square"
-                                        } />
-                                    </div >)
-                            }
-                        </div>)
-                    }
+                {/* <div className="col"></div> */}
+                <div className="col text-center mx-auto d-block">
+                    <GameBoard gridSize={props.gridSize} apple={apple} isSnake={isSnake}></GameBoard>
                 </div>
-                <div className="col"></div>
+                {/* <div className="col"></div> */}
             </div>
             <div className="row buttons">
                 buttons
             </div>
             <div className="row instructions">
                 How to Play?
-                    </div>
+            </div>
         </>)
+    function handleKeyPress(e) {
+        onKeyPressed(e, startGame, stopGame, velocity, setVelocity2);
+    }
+    function scoreBoardReducer(state, action) {
+        switch (action.type) {
+            case 'playerName':
+                return { ...state, ...{ playerName: action.playerName } };
+            case 'incrementPlayerScore':
+                return { ...state, ...{ playerScore: state.playerScore + 1 } };
+            case 'decrementPlayerScore':
+                return { ...state, ...{ playerScore: state.playerScore - 1 } };
+            default:
+                throw new Error();
+        }
+
+    }
+    // const [playerScore, setPlayerScore] = useState(0)
+    // const [playerLevel, setPlayerLevel] = useState(0)
+    function setVelocity2(payload) {
+        velocity = payload;
+        setVelocity(payload);
+    }
+    // const [playerName, setPlayerName] = useState("")
+
+
 
     function game() {
         let newXPosition = PlayerPosition.x + velocity.x;
@@ -102,7 +96,8 @@ export default function SnakeGame(props) {
         setPlayerPosition({ x: newXPosition, y: newYPosition })
         PlayerPosition = { x: newXPosition, y: newYPosition };
         if (isSnake(newXPosition, newYPosition)) {
-            snakeSize = 4;
+            // snakeSize = 4;
+            endGame();
         }
         trail.push({ x: newXPosition, y: newYPosition })
         //while (trailCopy.length > snakeSize) {
@@ -113,7 +108,8 @@ export default function SnakeGame(props) {
         }
         // setTrail(trailCopy);
         if (apple.x === newXPosition && apple.y === newYPosition) {
-            setPlayerScore(playerScore + 1)
+
+            // setPlayerScore(playerScore + 1)
             // setSnakeSize(snakeSize + 1)
             snakeSize += 1;
             apple = {
@@ -123,12 +119,26 @@ export default function SnakeGame(props) {
         }
     }
     function startGame() {
-        setIsPlaying(true)
+        setIsPlaying(scoreBoard.playerName)
         gameTick = setInterval(game, 1000 / 10)
     }
     function stopGame() {
         clearInterval(gameTick)
-        setIsPlaying(false)
+        setIsPlaying("Paused")
+    }
+    function endGame() {
+        stopGame();
+        trail = [{ x: 10, y: 7 }, { x: 10, y: 8 }, { x: 10, y: 9 }, { x: 10, y: 10 }]; //initial trail
+        PlayerPosition = { x: 10, y: 10 } //starting PlayerPosition
+        snakeSize = 4 //initialSize 4
+        gameTick = null;
+        velocity = { x: 0, y: 1 };
+        gridSize = 20
+        apple = {
+            x: Math.floor(Math.random() * gridSize),
+            y: Math.floor(Math.random() * gridSize)
+        }
+        setIsPlaying("Game Over")
     }
     function isSnake(x, y) {
         if (trail.find(obj => obj.x == x && obj.y == y)) {
