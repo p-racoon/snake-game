@@ -1,13 +1,13 @@
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect ,useReducer} from 'react'
 import GamePixel from "../../components/GamePixel";
 import ScoreBoard from "../../components/ScoreBoard";
 import { onKeyPressed } from "./onKeyPressed";
 import { takeRight } from 'lodash'
 
-let trail = [{ x: 10, y: 7 }, { x: 10, y: 8 }, { x: 10, y: 9 }, { x: 10, y: 10 }];
-let PlayerPosition = { x: 10, y: 10 }
-let snakeSize = 4
+let trail = [{ x: 10, y: 7 }, { x: 10, y: 8 }, { x: 10, y: 9 }, { x: 10, y: 10 }]; //initial trail
+let PlayerPosition = { x: 10, y: 10 } //starting PlayerPosition
+let snakeSize = 4 //initialSize 4
 let gameTick = null;
 let velocity = { x: 0, y: 1 };
 let gridSize = 20
@@ -24,8 +24,20 @@ export default function SnakeGame(props) {
         x: Math.floor(Math.random() * props.gridSize),
         y: Math.floor(Math.random() * props.gridSize)
     })
-    // const [trail, setTrail] = useState([{ x: 10, y: 7 }, { x: 10, y: 8 }, { x: 10, y: 9 }, { x: 10, y: 10 }])
-    // const [snakeSize, setSnakeSize] = useState(4)
+    // const [scoreBoard, dispatchToScoreBoard] = useReducer(scoreBoardReducer, initialState);
+    function scoreBoardReducer(state,action){
+        switch (action.type) {
+            case 'playerName':
+              return {count: state.count + 1};
+            case 'incrementPlayerScore':
+              return {count: state.count - 1};
+              case 'decrementPlayerScore':
+                return {count: state.count - 1};
+            default:
+              throw new Error();
+          }
+
+    }
     const [playerScore, setPlayerScore] = useState(0)
     const [playerLevel, setPlayerLevel] = useState(0)
     function setVelocity2(payload) {
@@ -66,7 +78,7 @@ export default function SnakeGame(props) {
             </div>
             <div className="row buttons">
                 buttons
-                    </div>
+            </div>
             <div className="row instructions">
                 How to Play?
                     </div>
@@ -108,12 +120,6 @@ export default function SnakeGame(props) {
                 x: Math.floor(Math.random() * props.gridSize),
                 y: Math.floor(Math.random() * props.gridSize)
             }
-            // setApple(
-            //     {
-            //         x: Math.floor(Math.random() * props.gridSize),
-            //         y: Math.floor(Math.random() * props.gridSize)
-            //     }
-            // )
         }
     }
     function startGame() {
