@@ -5,7 +5,7 @@ import { onKeyPressed } from "./onKeyPressed";
 import { takeRight, take, reverse } from 'lodash'
 import GameBoard from './GameBoard'
 
-let trail = [{ x: 10, y: 6 },{ x: 10, y: 7 }, { x: 10, y: 8 }, { x: 10, y: 9 }, { x: 10, y: 10 }]; //initial trail
+let trail = [{ x: 10, y: 6 }, { x: 10, y: 7 }, { x: 10, y: 8 }, { x: 10, y: 9 }, { x: 10, y: 10 }]; //initial trail
 let PlayerPosition = { x: 10, y: 10 } //starting PlayerPosition
 let snakeSize = 4 //initialSize 4
 let gameTick = null;
@@ -15,6 +15,8 @@ let apple = {
     x: Math.floor(Math.random() * gridSize),
     y: Math.floor(Math.random() * gridSize)
 }
+let totalTime = 0;
+let cutOffTime = 2;
 let direction = "forward";
 export default function SnakeGame(props) {
     gridSize = props.gridSize;
@@ -38,7 +40,7 @@ export default function SnakeGame(props) {
     }, [])
     return (
         <>
-            {/* <ScoreBoard playerName={isPlaying} level={scoreBoard.playerLevel} score={scoreBoard.playerScore} /> */}
+            <ScoreBoard playerName={isPlaying} level={scoreBoard.playerLevel} score={totalTime.toFixed(2)} score1={scoreBoard.playerScore} />
             <div className="game-board d-flex justify-content-center">
                 {/* <div className="col"></div> */}
                 <div className="">
@@ -47,7 +49,7 @@ export default function SnakeGame(props) {
                 {/* <div className="col"></div> */}
             </div>
             <div className="row buttons">
-                buttons{ScoreBoard.playerName}
+                buttons
             </div>
             <div className="row instructions">
                 How to Play?
@@ -80,6 +82,8 @@ export default function SnakeGame(props) {
 
 
     function game() {
+        totalTime += 0.1;
+        cutOffTime -= 0.1;
         let newXPosition = PlayerPosition.x + velocity.x;
         let newYPosition = PlayerPosition.y + velocity.y;
         if (newXPosition < 0) {
@@ -115,7 +119,6 @@ export default function SnakeGame(props) {
         }
         // setTrail(trailCopy);
         if (apple.x === newXPosition && apple.y === newYPosition) {
-
             // setPlayerScore(playerScore + 1)
             // setSnakeSize(snakeSize + 1)
             snakeSize += 1;
@@ -123,6 +126,14 @@ export default function SnakeGame(props) {
                 x: Math.floor(Math.random() * props.gridSize),
                 y: Math.floor(Math.random() * props.gridSize)
             }
+        }
+        if (cutOffTime <= 0) {
+            cutOffTime = 2;
+            if (snakeSize <= 1) {
+                endGame();
+            }
+            snakeSize -= 1;
+
         }
     }
     function startGame() {
@@ -135,7 +146,7 @@ export default function SnakeGame(props) {
     }
     function endGame() {
         stopGame();
-        trail = [{ x: 10, y: 6 },{ x: 10, y: 7 }, { x: 10, y: 8 }, { x: 10, y: 9 }, { x: 10, y: 10 }]; //initial trail
+        trail = [{ x: 10, y: 6 }, { x: 10, y: 7 }, { x: 10, y: 8 }, { x: 10, y: 9 }, { x: 10, y: 10 }]; //initial trail
         PlayerPosition = { x: 10, y: 10 } //starting PlayerPosition
         snakeSize = 5 //initialSize 4
         gameTick = null;
