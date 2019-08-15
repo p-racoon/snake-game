@@ -5,6 +5,10 @@
     /* IE 10 */
     flex: 1;
 }
+/* .worm-icon{
+    min-width: 80px;
+    min-height: 80px;
+} */
 .game-board{
     padding: 2px;
 }

@@ -21,7 +21,7 @@ export default function Instructions(props) {
                         Press 'Escape' or 'P' to Pause the game. <br />
                         Use the Arrow Keys, or (WASD) to guide the worm.<br />
                         This is not a snake game it's a worm game, worms do not bite themselves( Actually neither do snakes, but anyways), so making them bite their own tails won't kill the worms.<br />
-                        And, Earthworms can eat form either of their heads, so just press the key, which is opposite to the direction of the worm( e.g. - If the worm is going right, press the 'Left Arrow key' or 'W' to reverse its direction)<br />
+                        And, Earthworms can eat form either of their heads, so just press the 'R' key to change the eating mouth<br />
                         It is a race against time.<br />
                     </p>
                     <p className="lead">

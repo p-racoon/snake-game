@@ -16,7 +16,7 @@ export default function App2() {
                             <img
                                 src="/apple-e-worm.png"
                                 alt="apple-earthworm"
-                                className=" img-fluid rounded mx-auto d-block"
+                                className="worm-icon img-fluid rounded mx-auto d-block"
                                 onClick={() => setInstructionDivVisibile(!instructionDivVisibile)} />
                         </div>
                         <div className="col-5 ">

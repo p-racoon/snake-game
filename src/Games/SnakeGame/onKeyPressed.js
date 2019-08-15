@@ -1,4 +1,4 @@
-export function onKeyPressed(e, startGame, stopGame,velocity, setVelocity) {
+export function onKeyPressed(e, startGame, stopGame,velocity, setVelocity,reverseDirection) {
     switch (e.code) {
         
         case "Space":
@@ -24,6 +24,8 @@ export function onKeyPressed(e, startGame, stopGame,velocity, setVelocity) {
         case "ArrowDown":
             setVelocity({ x: 1, y: 0 })
             break;
+        case "KeyR":
+            reverseDirection()
         default:
             //uselessKey pressed
             break;

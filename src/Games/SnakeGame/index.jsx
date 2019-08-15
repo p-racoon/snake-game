@@ -2,10 +2,10 @@
 import React, { useState, useEffect, useReducer } from 'react'
 import ScoreBoard from "../../components/ScoreBoard";
 import { onKeyPressed } from "./onKeyPressed";
-import { takeRight } from 'lodash'
+import { takeRight, take, reverse } from 'lodash'
 import GameBoard from './GameBoard'
 
-let trail = [{ x: 10, y: 7 }, { x: 10, y: 8 }, { x: 10, y: 9 }, { x: 10, y: 10 }]; //initial trail
+let trail = [{ x: 10, y: 6 },{ x: 10, y: 7 }, { x: 10, y: 8 }, { x: 10, y: 9 }, { x: 10, y: 10 }]; //initial trail
 let PlayerPosition = { x: 10, y: 10 } //starting PlayerPosition
 let snakeSize = 4 //initialSize 4
 let gameTick = null;
@@ -15,6 +15,7 @@ let apple = {
     x: Math.floor(Math.random() * gridSize),
     y: Math.floor(Math.random() * gridSize)
 }
+let direction = "forward";
 export default function SnakeGame(props) {
     gridSize = props.gridSize;
     const [isPlaying, setIsPlaying] = useState(false)
@@ -38,22 +39,22 @@ export default function SnakeGame(props) {
     return (
         <>
             {/* <ScoreBoard playerName={isPlaying} level={scoreBoard.playerLevel} score={scoreBoard.playerScore} /> */}
-            <div className="row game-board">
+            <div className="game-board d-flex justify-content-center">
                 {/* <div className="col"></div> */}
-                <div className="col text-center mx-auto d-block">
+                <div className="">
                     <GameBoard gridSize={props.gridSize} apple={apple} isSnake={isSnake}></GameBoard>
                 </div>
                 {/* <div className="col"></div> */}
             </div>
             <div className="row buttons">
-                buttons
+                buttons{ScoreBoard.playerName}
             </div>
             <div className="row instructions">
                 How to Play?
             </div>
         </>)
     function handleKeyPress(e) {
-        onKeyPressed(e, startGame, stopGame, velocity, setVelocity2);
+        onKeyPressed(e, startGame, stopGame, velocity, setVelocity2, reverseDirection);
     }
     function scoreBoardReducer(state, action) {
         switch (action.type) {
@@ -97,14 +98,20 @@ export default function SnakeGame(props) {
         PlayerPosition = { x: newXPosition, y: newYPosition };
         if (isSnake(newXPosition, newYPosition)) {
             // snakeSize = 4;
-            endGame();
+            // endGame();
         }
-        trail.push({ x: newXPosition, y: newYPosition })
+        if (direction == "forward") {
+            trail.push({ x: newXPosition, y: newYPosition })
+        }
+        else {
+            trail.unshift({ x: newXPosition, y: newYPosition })
+        }
+
         //while (trailCopy.length > snakeSize) {
         if (trail.length > snakeSize) {
             // ordTrail.shift()
             // setTrail(trailCopy.slice(snakeSize))
-            trail = takeRight(trail, snakeSize);
+            trail = direction === "forward" ? takeRight(trail, snakeSize) : take(trail, snakeSize);
         }
         // setTrail(trailCopy);
         if (apple.x === newXPosition && apple.y === newYPosition) {
@@ -128,9 +135,9 @@ export default function SnakeGame(props) {
     }
     function endGame() {
         stopGame();
-        trail = [{ x: 10, y: 7 }, { x: 10, y: 8 }, { x: 10, y: 9 }, { x: 10, y: 10 }]; //initial trail
+        trail = [{ x: 10, y: 6 },{ x: 10, y: 7 }, { x: 10, y: 8 }, { x: 10, y: 9 }, { x: 10, y: 10 }]; //initial trail
         PlayerPosition = { x: 10, y: 10 } //starting PlayerPosition
-        snakeSize = 4 //initialSize 4
+        snakeSize = 5 //initialSize 4
         gameTick = null;
         velocity = { x: 0, y: 1 };
         gridSize = 20
@@ -139,6 +146,17 @@ export default function SnakeGame(props) {
             y: Math.floor(Math.random() * gridSize)
         }
         setIsPlaying("Game Over")
+    }
+    function reverseDirection() {
+        PlayerPosition = direction == "forward" ? take(trail)[0] : takeRight(trail)[0]
+        velocity = {
+            x: velocity.x * -1,
+            y: velocity.y * -1,
+        }
+
+        // reverse(trail)
+        direction = direction == "forward" ? "reverse" : "forward";
+
     }
     function isSnake(x, y) {
         if (trail.find(obj => obj.x == x && obj.y == y)) {
