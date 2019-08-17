@@ -25,10 +25,7 @@ export default function SnakeGame(props) {
     const [isPlaying, setIsPlaying] = useState("NOTSTARTED")
     const [, setVelocity] = useState({ x: 0, y: 1 })
     const [, setPlayerPosition] = useState({ x: 10, y: 10 });
-    const [, setApple] = useState({
-        x: Math.floor(Math.random() * props.gridSize),
-        y: Math.floor(Math.random() * props.gridSize)
-    })
+
 
     useEffect(() => {
         document.addEventListener("keydown", handleKeyPress);
@@ -82,7 +79,7 @@ export default function SnakeGame(props) {
         else if (totalTime > 20 && totalTime <= 30) {
             props.setWormMessage("Holy Gaga, in the 20-20 league!!")
         }
-        else if (totalTime > 30 ) {
+        else if (totalTime > 30) {
             props.setWormMessage("Poocho Satra, You know where your apples are")
         }
 
@@ -164,19 +161,21 @@ export default function SnakeGame(props) {
         }
     }
     function startGame() {
-        setIsPlaying("PLAYING")
         trail = [{ x: 10, y: 6 }, { x: 10, y: 7 }, { x: 10, y: 8 }, { x: 10, y: 9 }, { x: 10, y: 10 }]; //initial trail
         PlayerPosition = { x: 10, y: 10 } //starting PlayerPosition
         snakeSize = 5 //initialSize 4
         gameTick = null;
         velocity = { x: 0, y: 1 };
         gridSize = 20
-        apple = {
-            x: Math.floor(Math.random() * gridSize),
-            y: Math.floor(Math.random() * gridSize)
+        if (isPlaying != "NOTSTARTED") {
+            apple = {
+                x: Math.floor(Math.random() * gridSize),
+                y: Math.floor(Math.random() * gridSize)
+            }
         }
         totalTime = 0;
         gameTick = setInterval(game, 1000 / 10)
+        setIsPlaying("PLAYING")
     }
     function stopGame() {
         clearInterval(gameTick)
