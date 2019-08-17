@@ -44,7 +44,7 @@ export default function SnakeGame(props) {
             <div className="game-board d-flex justify-content-center ">
                 <div className="mb-4">
                     <ScoreBoard playerName={props.playerName} score={totalTime.toFixed(2)} />
-                    <GameMessage score={totalTime.toFixed(2)} playerName={props.playerName} isPlaying={isPlaying} />
+                    <GameMessage score={totalTime.toFixed(2)} playerName={props.playerName} isPlaying={isPlaying}  />
                     <GameBoard gridSize={props.gridSize} apple={apple} isSnake={isSnake}></GameBoard>
                 </div>
             </div>
@@ -145,7 +145,6 @@ export default function SnakeGame(props) {
                 endGame();
             }
             snakeSize -= 1;
-
         }
     }
     function startGame() {

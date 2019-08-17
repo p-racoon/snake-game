@@ -10,17 +10,16 @@ export default function GameMessage(props) {
                     <div class="card border-danger mb-3" >
                         <div class="card-header">Well Done! #Sarcasm</div>
                         <div class="card-body">
-                            <h4 class="card-title ">Lord. {props.playerName}</h4>
+                            <h4 class="card-title ">WormHearted Lord. {props.playerName}</h4>
                             <p class="card-text">No. of Seconds Survived: {props.score}</p>
                         </div>
                     </div> :
                     props.isPlaying === "PAUSED" ?
-                        "paused" :
+                        <p className="text-muted">"Press 'Space Bar' or 'Enter' to Continue"</p> :
                         props.isPlaying === "NOTSTARTED" ?
-                            "notstarted" :
-                            <p className="text-muted">nothningness</p>
+                            <p className="text-muted">"Press 'Space Bar' or 'Enter' to Start"</p> :
+                            <p className="text-muted"></p>
             }
-
         </div>
     )
 }
