@@ -6,6 +6,7 @@ import './index2.css'
 export default function App2() {
     const [wormMessage, setWormMessage] = useState("Feed Me Right Now")
     const [instructionDivVisibile, setInstructionDivVisibile] = useState(true)
+    const [playerName, setPlayerName] = useState("GuestUser" + Math.floor(Math.random() * 1000));
     return (
         <div className="container">
             <div className="row ">
@@ -21,16 +22,29 @@ export default function App2() {
                         </div>
                         <div className="col-5 ">
                             <div className="card border-primary mt-3 p-2">
-                                <h2 class="">{wormMessage}</h2>
-                                <h5 class="">-EarthWorm</h5>
+                                <h2 className="">{wormMessage}</h2>
+                                <h5 className="">-EarthWorm</h5>
                             </div>
                         </div>
                         <div className="col-3"></div>
                     </div>
-                    {/* <span class="border-top my-3" /> */}
+                    {/* <span className="border-top my-3" /> */}
+
                     {instructionDivVisibile ?
-                        <WormGameInstructions setInstructionDivVisibile={setInstructionDivVisibile} /> :
-                        <SnakeGame gridSize={20} />}
+                        <div className="row">
+                            <div className="col ">
+                                <div className="jumbotron m-2">
+                                    <div className="form-group row text-center">
+                                        <div className="col"></div>
+                                        <label className="col-sm-4 col-form-label" for="playerName">Please Enter Your Name, Wormhearted Saviour</label>
+                                        <input type="text" className="col-sm-3 form-control" placeholder={playerName} id="playerName" value={playerName} onChange={(e) => setPlayerName(e.value)} />
+                                        <div className="col"></div>
+                                    </div>
+                                    <WormGameInstructions playerName={playerName} setInstructionDivVisibile={setInstructionDivVisibile} />
+                                </div>
+                            </div>
+                        </div> :
+                        <SnakeGame gridSize={20} playerName={playerName} />}
                 </div>
             </div>
         </div>

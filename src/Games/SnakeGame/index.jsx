@@ -4,6 +4,7 @@ import ScoreBoard from "../../components/ScoreBoard";
 import { onKeyPressed } from "./onKeyPressed";
 import { takeRight, take, reverse } from 'lodash'
 import GameBoard from './GameBoard'
+import GameMessage from "./GameMessage";
 
 let trail = [{ x: 10, y: 6 }, { x: 10, y: 7 }, { x: 10, y: 8 }, { x: 10, y: 9 }, { x: 10, y: 10 }]; //initial trail
 let PlayerPosition = { x: 10, y: 10 } //starting PlayerPosition
@@ -40,19 +41,46 @@ export default function SnakeGame(props) {
     }, [])
     return (
         <>
-            <ScoreBoard playerName={isPlaying} level={scoreBoard.playerLevel} score={totalTime.toFixed(2)} score1={scoreBoard.playerScore} />
+            <ScoreBoard playerName={props.playerName} gameStatus={isPlaying} level={scoreBoard.playerLevel} score={totalTime.toFixed(2)} score1={scoreBoard.playerScore} />
             <div className="game-board d-flex justify-content-center">
                 {/* <div className="col"></div> */}
                 <div className="">
+                    {/* {isPlaying=="GameInProgress"?} */}
+                    <GameMessage score={totalTime.toFixed(2)} playerName={props.playerName} />
                     <GameBoard gridSize={props.gridSize} apple={apple} isSnake={isSnake}></GameBoard>
                 </div>
                 {/* <div className="col"></div> */}
             </div>
             <div className="row buttons">
-                buttons
+                {/* <ArrowKeysInput /> */}
+                <div className="col-3">
+                    <button type="button" class="btn btn-primary">Quit</button>
+                    <button type="button" class="btn btn-primary"> >  / | | </button>
+                </div>
+                <div className="col">
+                    <button type="button" class="btn btn-primary">W &uarr;</button> <br />
+                    <button type="button" class="btn btn-primary">A &larr;</button>
+                    <button type="button" class="btn btn-primary">S &darr;</button>
+                    <button type="button" class="btn btn-primary">D &rarr;</button>
+                </div>
+                <div className="col-3">
+                    <button type="button" class="btn btn-primary">Reverse</button>
+                </div>
+
+
             </div>
-            <div className="row instructions">
-                How to Play?
+            <hr />
+            <div className="row instructions text-center">
+                <div className="col">
+                    <h3>How to Play?</h3>
+                    <p>Acid Rain is killing the worms, every 2 seconds a part of the worm dies, you have to be quick.<br />
+                        Press 'Space' or 'Enter' to start the game.<br />
+                        Press 'Escape' or 'P' to Pause the game. <br />
+                        Use the Arrow Keys, or (WASD) to guide the worm.<br />
+                        This is not a snake game it's a worm game, worms do not bite themselves( Actually neither do snakes, but anyways), so making them bite their own tails won't kill the worms.<br />
+                        And, Earthworms can eat form either of their heads, so just press the 'R' key to change the eating mouth<br />
+                        It is a race against time.</p>
+                </div>
             </div>
         </>)
     function handleKeyPress(e) {
@@ -69,15 +97,11 @@ export default function SnakeGame(props) {
             default:
                 throw new Error();
         }
-
     }
-    // const [playerScore, setPlayerScore] = useState(0)
-    // const [playerLevel, setPlayerLevel] = useState(0)
     function setVelocity2(payload) {
         velocity = payload;
         setVelocity(payload);
     }
-    // const [playerName, setPlayerName] = useState("")
 
 
 
