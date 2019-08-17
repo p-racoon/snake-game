@@ -15,7 +15,7 @@ export default function App2() {
                         <div className="col-3"></div>
                         <div className="col-1">
                             <img
-                                src="/apple-e-worm.png"
+                                src="./apple-e-worm.png"
                                 alt="apple-earthworm"
                                 className="worm-icon img-fluid rounded mx-auto d-block"
                                 onClick={() => setInstructionDivVisibile(!instructionDivVisibile)} />
@@ -36,15 +36,23 @@ export default function App2() {
                                 <div className="jumbotron m-2">
                                     <div className="form-group row text-center">
                                         <div className="col"></div>
-                                        <label className="col-sm-4 col-form-label" for="playerName">Please Enter Your Name, Wormhearted Saviour</label>
-                                        <input type="text" className="col-sm-3 form-control" placeholder={playerName} id="playerName" value={playerName} onChange={(e) => setPlayerName(e.value)} />
+                                        <label className="col-sm-4 col-form-label" htmlFor="playerName">Please Enter Your Name, Wormhearted Saviour</label>
+                                        <input
+                                            type="text"
+                                            className="col-sm-3 form-control"
+                                            placeholder={playerName}
+                                            id="playerName"
+                                            maxLength="15"
+                                            value={playerName}
+                                            onChange={(e) => setPlayerName(e.target.value)}
+                                            onFocus={(e) => e.target.select()} />
                                         <div className="col"></div>
                                     </div>
                                     <WormGameInstructions playerName={playerName} setInstructionDivVisibile={setInstructionDivVisibile} />
                                 </div>
                             </div>
                         </div> :
-                        <SnakeGame gridSize={20} playerName={playerName} />}
+                        <SnakeGame gridSize={20} playerName={playerName} setWormMessage={setWormMessage}/>}
                 </div>
             </div>
         </div>

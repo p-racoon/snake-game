@@ -2,9 +2,10 @@
 import React, { useState, useEffect, useReducer } from 'react'
 import ScoreBoard from "../../components/ScoreBoard";
 import { onKeyPressed } from "./onKeyPressed";
-import { takeRight, take, reverse } from 'lodash'
+import { takeRight, take } from 'lodash'
 import GameBoard from './GameBoard'
 import GameMessage from "./GameMessage";
+import ArrowButtons from './ArrowButtons';
 
 let trail = [{ x: 10, y: 6 }, { x: 10, y: 7 }, { x: 10, y: 8 }, { x: 10, y: 9 }, { x: 10, y: 10 }]; //initial trail
 let PlayerPosition = { x: 10, y: 10 } //starting PlayerPosition
@@ -21,54 +22,39 @@ let cutOffTime = 2;
 let direction = "forward";
 export default function SnakeGame(props) {
     gridSize = props.gridSize;
-    const [isPlaying, setIsPlaying] = useState(false)
+    const [isPlaying, setIsPlaying] = useState("NOTSTARTED")
     const [, setVelocity] = useState({ x: 0, y: 1 })
     const [, setPlayerPosition] = useState({ x: 10, y: 10 });
     const [, setApple] = useState({
         x: Math.floor(Math.random() * props.gridSize),
         y: Math.floor(Math.random() * props.gridSize)
     })
-    const [scoreBoard, dispatchToScoreBoard] = useReducer(scoreBoardReducer, {
-        playerName: "Guest user" + Math.floor(Math.random() * 1000),
-        playerScore: 0,
-    });
 
     useEffect(() => {
-        document.addEventListener("keydown", handleKeyPress);
+        document.addEventListener("keydown", () => handleKeyPress());
         return () => {
-            document.removeEventListener("keydown", handleKeyPress);
+            document.removeEventListener("keydown", () => handleKeyPress());
         };
+    }, [])
+    useEffect(() => {
+        window.scrollTo(0, 0)
     }, [])
     return (
         <>
-            <ScoreBoard playerName={props.playerName} gameStatus={isPlaying} level={scoreBoard.playerLevel} score={totalTime.toFixed(2)} score1={scoreBoard.playerScore} />
-            <div className="game-board d-flex justify-content-center">
-                {/* <div className="col"></div> */}
-                <div className="">
-                    {/* {isPlaying=="GameInProgress"?} */}
-                    <GameMessage score={totalTime.toFixed(2)} playerName={props.playerName} />
+            <div className="game-board d-flex justify-content-center ">
+                <div className="mb-4">
+                    <ScoreBoard playerName={props.playerName} score={totalTime.toFixed(2)} />
+                    <GameMessage score={totalTime.toFixed(2)} playerName={props.playerName} isPlaying={isPlaying} />
                     <GameBoard gridSize={props.gridSize} apple={apple} isSnake={isSnake}></GameBoard>
                 </div>
-                {/* <div className="col"></div> */}
             </div>
-            <div className="row buttons">
-                {/* <ArrowKeysInput /> */}
-                <div className="col-3">
-                    <button type="button" class="btn btn-primary">Quit</button>
-                    <button type="button" class="btn btn-primary"> >  / | | </button>
-                </div>
-                <div className="col">
-                    <button type="button" class="btn btn-primary">W &uarr;</button> <br />
-                    <button type="button" class="btn btn-primary">A &larr;</button>
-                    <button type="button" class="btn btn-primary">S &darr;</button>
-                    <button type="button" class="btn btn-primary">D &rarr;</button>
-                </div>
-                <div className="col-3">
-                    <button type="button" class="btn btn-primary">Reverse</button>
-                </div>
-
-
-            </div>
+            <ArrowButtons
+                isPlaying={isPlaying}
+                startGame={startGame}
+                stopGame={stopGame}
+                setVelocity={setVelocity}
+                reverseDirection={reverseDirection}
+                endGame={endGame} />
             <hr />
             <div className="row instructions text-center">
                 <div className="col">
@@ -79,25 +65,27 @@ export default function SnakeGame(props) {
                         Use the Arrow Keys, or (WASD) to guide the worm.<br />
                         This is not a snake game it's a worm game, worms do not bite themselves( Actually neither do snakes, but anyways), so making them bite their own tails won't kill the worms.<br />
                         And, Earthworms can eat form either of their heads, so just press the 'R' key to change the eating mouth<br />
-                        It is a race against time.</p>
+                        It is a race against time.
+                        </p>
                 </div>
             </div>
         </>)
+
     function handleKeyPress(e) {
-        onKeyPressed(e, startGame, stopGame, velocity, setVelocity2, reverseDirection);
+        onKeyPressed(e, startGame, stopGame, velocity, setVelocity2, reverseDirection, endGame);
     }
-    function scoreBoardReducer(state, action) {
-        switch (action.type) {
-            case 'playerName':
-                return { ...state, ...{ playerName: action.playerName } };
-            case 'incrementPlayerScore':
-                return { ...state, ...{ playerScore: state.playerScore + 1 } };
-            case 'decrementPlayerScore':
-                return { ...state, ...{ playerScore: state.playerScore - 1 } };
-            default:
-                throw new Error();
-        }
-    }
+    // function scoreBoardReducer(state, action) {
+    //     switch (action.type) {
+    //         case 'playerName':
+    //             return { ...state, ...{ playerName: action.playerName } };
+    //         case 'incrementPlayerScore':
+    //             return { ...state, ...{ playerScore: state.playerScore + 1 } };
+    //         case 'decrementPlayerScore':
+    //             return { ...state, ...{ playerScore: state.playerScore - 1 } };
+    //         default:
+    //             throw new Error();
+    //     }
+    // }
     function setVelocity2(payload) {
         velocity = payload;
         setVelocity(payload);
@@ -128,7 +116,7 @@ export default function SnakeGame(props) {
             // snakeSize = 4;
             // endGame();
         }
-        if (direction == "forward") {
+        if (direction === "forward") {
             trail.push({ x: newXPosition, y: newYPosition })
         }
         else {
@@ -161,15 +149,7 @@ export default function SnakeGame(props) {
         }
     }
     function startGame() {
-        setIsPlaying(scoreBoard.playerName)
-        gameTick = setInterval(game, 1000 / 10)
-    }
-    function stopGame() {
-        clearInterval(gameTick)
-        setIsPlaying("Paused")
-    }
-    function endGame() {
-        stopGame();
+        setIsPlaying("PLAYING")
         trail = [{ x: 10, y: 6 }, { x: 10, y: 7 }, { x: 10, y: 8 }, { x: 10, y: 9 }, { x: 10, y: 10 }]; //initial trail
         PlayerPosition = { x: 10, y: 10 } //starting PlayerPosition
         snakeSize = 5 //initialSize 4
@@ -180,21 +160,31 @@ export default function SnakeGame(props) {
             x: Math.floor(Math.random() * gridSize),
             y: Math.floor(Math.random() * gridSize)
         }
-        setIsPlaying("Game Over")
+        totalTime = 0;
+        gameTick = setInterval(game, 1000 / 10)
+    }
+    function stopGame() {
+        clearInterval(gameTick)
+        gameTick = null;
+        setIsPlaying("PAUSED")
+    }
+    function endGame() {
+        stopGame();
+        setIsPlaying("ENDED")
     }
     function reverseDirection() {
-        PlayerPosition = direction == "forward" ? take(trail)[0] : takeRight(trail)[0]
+        PlayerPosition = direction === "forward" ? take(trail)[0] : takeRight(trail)[0]
         velocity = {
             x: velocity.x * -1,
             y: velocity.y * -1,
         }
 
         // reverse(trail)
-        direction = direction == "forward" ? "reverse" : "forward";
+        direction = direction === "forward" ? "reverse" : "forward";
 
     }
     function isSnake(x, y) {
-        if (trail.find(obj => obj.x == x && obj.y == y)) {
+        if (trail.find(obj => obj.x === x && obj.y === y)) {
             return true
         }
         return false;
