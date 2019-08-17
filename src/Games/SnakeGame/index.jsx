@@ -31,9 +31,9 @@ export default function SnakeGame(props) {
     })
 
     useEffect(() => {
-        document.addEventListener("keydown", () => handleKeyPress());
+        document.addEventListener("keydown", handleKeyPress());
         return () => {
-            document.removeEventListener("keydown", () => handleKeyPress());
+            document.removeEventListener("keydown", handleKeyPress());
         };
     }, [])
     useEffect(() => {
@@ -52,7 +52,7 @@ export default function SnakeGame(props) {
                 isPlaying={isPlaying}
                 startGame={startGame}
                 stopGame={stopGame}
-                setVelocity={setVelocity}
+                setVelocity={setVelocity2}
                 reverseDirection={reverseDirection}
                 endGame={endGame} />
             <hr />

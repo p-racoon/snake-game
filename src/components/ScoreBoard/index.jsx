@@ -6,8 +6,8 @@ export default function ScoreBoard(props) {
             <div className="col text-center">
 
                 <h4>
-                    <span class="badge badge-pill badge-dark m-2">{props.playerName || "Player Name"}</span>
-                    <span class="badge badge-pill badge-dark m-2">Score:{props.score || "0"}</span>
+                    <span className="badge badge-pill badge-dark m-2">{props.playerName || "Player Name"}</span>
+                    <span className="badge badge-pill badge-dark m-2">Score:{props.score || "0"}</span>
                 </h4>
 
             </div>
