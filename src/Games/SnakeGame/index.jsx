@@ -39,12 +39,15 @@ export default function SnakeGame(props) {
     useEffect(() => {
         window.scrollTo(0, 0)
     }, [])
+    useEffect(() => {
+        chooseWormMessage()
+    })
     return (
         <>
             <div className="game-board d-flex justify-content-center ">
                 <div className="mb-4">
                     <ScoreBoard playerName={props.playerName} score={totalTime.toFixed(2)} />
-                    <GameMessage score={totalTime.toFixed(2)} playerName={props.playerName} isPlaying={isPlaying}  />
+                    <GameMessage score={totalTime.toFixed(2)} playerName={props.playerName} isPlaying={isPlaying} />
                     <GameBoard gridSize={props.gridSize} apple={apple} isSnake={isSnake}></GameBoard>
                 </div>
             </div>
@@ -70,7 +73,20 @@ export default function SnakeGame(props) {
                 </div>
             </div>
         </>)
+    function chooseWormMessage() {
+        if (totalTime <= 10) {
+            props.setWormMessage("Feed Me, Its Dinner Time Already")
+        } else if (totalTime > 10 && totalTime <= 20) {
+            props.setWormMessage("Woohoo! You are proving yourself to be worthy!!")
+        }
+        else if (totalTime > 20 && totalTime <= 30) {
+            props.setWormMessage("Holy Gaga, in the 20-20 league!!")
+        }
+        else if (totalTime > 30 ) {
+            props.setWormMessage("Poocho Satra, You know where your apples are")
+        }
 
+    }
     function handleKeyPress(e) {
         onKeyPressed(e, startGame, stopGame, velocity, setVelocity2, reverseDirection, endGame);
     }
@@ -91,13 +107,13 @@ export default function SnakeGame(props) {
         setVelocity(payload);
     }
 
-
-
     function game() {
+        // chooseWormMessage()
         totalTime += 0.1;
         cutOffTime -= 0.1;
         let newXPosition = PlayerPosition.x + velocity.x;
         let newYPosition = PlayerPosition.y + velocity.y;
+
         if (newXPosition < 0) {
             newXPosition = props.gridSize - 1;
         }

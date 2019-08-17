@@ -23,7 +23,6 @@ export default function App2() {
                         <div className="col-5 ">
                             <div className="card border-primary mt-3 p-2">
                                 <h2 className="">{wormMessage}</h2>
-                                <h5 className="">-EarthWorm</h5>
                             </div>
                         </div>
                         <div className="col-3"></div>
@@ -52,7 +51,7 @@ export default function App2() {
                                 </div>
                             </div>
                         </div> :
-                        <SnakeGame gridSize={20} playerName={playerName} setWormMessage={setWormMessage}/>}
+                        <SnakeGame gridSize={20} playerName={playerName} setWormMessage={setWormMessage} />}
                 </div>
             </div>
         </div>
