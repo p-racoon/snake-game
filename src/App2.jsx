@@ -12,20 +12,20 @@ export default function App2() {
             <div className="row ">
                 <div className="col text-center">
                     <div className="row">
-                        <div className="col-3"></div>
-                        <div className="col-1">
+                        <div className="col-lg-3 col-0"></div>
+                        <div className="col">
                             <img
                                 src="./apple-e-worm.png"
                                 alt="apple-earthworm"
-                                className="worm-icon img-fluid rounded mx-auto d-block"
+                                className="worm-icon rounded img-fluid mx-auto"
                                 onClick={() => setInstructionDivVisibile(!instructionDivVisibile)} />
                         </div>
-                        <div className="col-5 ">
+                        <div className="col-lg-4 col-7">
                             <div className="card border-primary mt-3 p-2">
                                 <h2 className="">{wormMessage}</h2>
                             </div>
                         </div>
-                        <div className="col-3"></div>
+                        <div className="col-lg-3 col-0"></div>
                     </div>
                     {/* <span className="border-top my-3" /> */}
 
