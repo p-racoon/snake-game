@@ -27,10 +27,13 @@ Do this and you will find your place in one of my 5 Hearts.
             <p className="lead ">
                 <button className="btn btn-primary btn-lg"
                     onClick={() => setAcceptButtonMessage("Seriously! I hope you got this! Counting on you")}
-                    onDoubleClick={() => props.setInstructionDivVisibile(false)}>
+                    onDoubleClick={(e) => {
+                        e.preventDefault();
+                        props.setInstructionDivVisibile(false);
+                    }}>
                     {acceptButtonMessage}
                 </button>
-                {acceptButtonMessage ==="Seriously! I hope you got this! Counting on you" ?
+                {acceptButtonMessage === "Seriously! I hope you got this! Counting on you" ?
                     <span className="text-muted"><br />(Double Click to Enter :)</span> :
                     null}
             </p>

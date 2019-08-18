@@ -9,6 +9,9 @@
     min-width: 80px;
     min-height: 80px;
 } */
+.btn{
+    cursor:'pointer'
+}
 .game-board{
     padding: 2px;
 }

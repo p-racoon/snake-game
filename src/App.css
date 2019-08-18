@@ -1,18 +1,26 @@
 .App {
   /* text-align: center; */
 }
+
 .game {
   /* display: flex;
   flex-direction: row; */
   /* margin: 0 auto; */
 }
-canvas{
+
+.btn {
+  cursor: 'pointer';
+}
+
+canvas {
   background-color: black;
 }
-.board{
+
+.board {
   height: 100px;
   width: 100px;
 }
+
 .square {
   background: #fff;
   border: 1px solid #999;
